@@ -351,8 +351,9 @@ class PILRenderer:
             rng = max(mx - mn, 1e-3)
             pts = []
             sw  = W - 470
-            for k, v in enumerate(self.reward_history[-(sw//3):]):
-                px2 = 235 + int(k / max(len(self.reward_history[-(sw//3)])-1, 1) * (sw-10))
+            history_slice = self.reward_history[-(sw//3):]
+            for k, v in enumerate(history_slice):
+                px2 = 235 + int(k / max(len(history_slice) -1, 1) * (sw-10))
                 py2 = H - 30 - int((v - mn) / rng * 40)
                 pts.append((px2, py2))
             if len(pts) > 1:
