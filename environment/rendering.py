@@ -188,7 +188,7 @@ class PILRenderer:
                                   glow_pos[0]+r, glow_pos[1]+r//2],
                                  outline=(*C_GREEN, max(0, 200 - r*15)))
 
-    # ── Agent ────────────────────────────────────
+    # Agent 
     def _draw_agent(self, draw, action, budget, purchases):
         stall_positions = [
             (0, 0), (2, 0), (4, 0), (6, 0),
@@ -256,7 +256,7 @@ class PILRenderer:
             fy = by + 3 + (fi // 3) * 4
             draw.ellipse([fx-2, fy-2, fx+2, fy+2], fill=C_GREEN)
 
-    # ── HUD panels ───────────────────────────────
+    # HUD panels 
     def _rounded_rect(self, draw, x, y, w, h, r, fill):
         draw.rectangle([x+r, y, x+w-r, y+h], fill=fill)
         draw.rectangle([x, y+r, x+w, y+h-r], fill=fill)
@@ -266,16 +266,16 @@ class PILRenderer:
     def _draw_hud(self, draw, prices, nutrition, budget, day, action, reward, total_reward, alert, purchases):
         panel = (20, 28, 52, 210)
 
-        # ── Title ──
+        #  Title and alert
         draw.text((W//2, 10), "SokoPrice Market Environment",
                   font=self._font_lg, fill=C_WHITE, anchor="mt")
         draw.text((W//2, 34), "Rwanda Informal Agricultural Market Simulation",
                   font=self._font_sm, fill=C_GREY, anchor="mt")
         if alert:
-            draw.text((W//2, 54), "⚠  PRICE SPIKE ALERT",
+            draw.text((W//2, 54), "PRICE SPIKE ALERT",
                       font=self._font_md, fill=C_RED, anchor="mt")
 
-        # ── Left: prices ──
+        # Left: prices
         self._rounded_rect(draw, 8, 80, 210, N_ITEMS*28+50, 8, panel)
         draw.text((15, 85), "MARKET PRICES (RWF)", font=self._font_sm, fill=C_TEAL)
         draw.text((15, 103), "ITEM", font=self._font_xs, fill=C_GREY)
