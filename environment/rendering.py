@@ -17,9 +17,7 @@ from environment.custom_env import (
     SokoPriceEnv, FOOD_ITEMS, BASE_PRICES, N_ITEMS, DAILY_BUDGET, MAX_DAYS
 )
 
-# ─────────────────────────────────────────────
-#  Try Panda3D — fall back to enhanced pygame
-# ─────────────────────────────────────────────
+#  Try Panda3D - fall back to enhanced pygame
 PANDA3D_AVAILABLE = False
 try:
     from panda3d.core import (
@@ -37,9 +35,7 @@ try:
 except ImportError:
     print(" Panda3D not found - using enhanced PIL rendering")
 
-# ─────────────────────────────────────────────
 #  Colour palette
-# ─────────────────────────────────────────────
 C_BG       = (12,  18,  35)
 C_PANEL    = (20,  30,  55, 210)
 C_BLUE     = (50, 130, 255)
@@ -54,26 +50,19 @@ W, H = 1100, 700
 FPS  = 6
 
 STALL_COLORS = [
-    (220,  80,  60),  # Beans     — red
-    (240, 180,  40),  # Maize     — yellow
-    (180, 140,  80),  # Cassava   — tan
-    (255, 200,  60),  # Banana    — bright yellow
-    (220,  60,  60),  # Tomato    — red
-    (60,  180,  80),  # Spinach   — green
-    (200, 130,  60),  # Sweet Pot — orange
-    (240, 240, 220),  # Rice      — cream
+    (220,  80,  60),  # Beans     - red
+    (240, 180,  40),  # Maize     - yellow
+    (180, 140,  80),  # Cassava   - tan
+    (255, 200,  60),  # Banana    - bright yellow
+    (220,  60,  60),  # Tomato    - red
+    (60,  180,  80),  # Spinach   - green
+    (200, 130,  60),  # Sweet Pot - orange
+    (240, 240, 220),  # Rice      - cream
 ]
 
-
-# ═══════════════════════════════════════════════════════════
 #  ENHANCED PIL RENDERER (always available, high quality)
-# ═══════════════════════════════════════════════════════════
 
 class PILRenderer:
-    """
-    High-quality 2.5D market scene rendered with PIL.
-    Isometric-style market stalls, animated agent, full HUD.
-    """
 
     def __init__(self):
         self.agent_x   = W // 2
@@ -82,7 +71,6 @@ class PILRenderer:
         self.trail     = []
         self.reward_history = []
 
-        # Try to load a font; fall back to default
         try:
             self._font_lg  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 20)
             self._font_md  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
@@ -91,7 +79,7 @@ class PILRenderer:
         except Exception:
             self._font_lg = self._font_md = self._font_sm = self._font_xs = ImageFont.load_default()
 
-    # ── Iso helpers ─────────────────────────────
+    # Iso helpers
     def _iso(self, gx, gy, gz=0):
         """Convert grid (gx, gy, gz) to screen (x, y) isometric."""
         TILE_W, TILE_H = 64, 32
@@ -127,7 +115,7 @@ class PILRenderer:
     def _lighten(self, col, factor=1.3):
         return tuple(min(255, int(c * factor)) for c in col[:3])
 
-    # ── Scene ────────────────────────────────────
+    # Scene
     def _draw_scene(self, img, draw, prices, purchases, day):
         """Draw isometric market scene."""
         # Ground tiles
@@ -188,7 +176,7 @@ class PILRenderer:
                                   glow_pos[0]+r, glow_pos[1]+r//2],
                                  outline=(*C_GREEN, max(0, 200 - r*15)))
 
-    # Agent 
+    # Agent
     def _draw_agent(self, draw, action, budget, purchases):
         stall_positions = [
             (0, 0), (2, 0), (4, 0), (6, 0),
@@ -266,16 +254,16 @@ class PILRenderer:
     def _draw_hud(self, draw, prices, nutrition, budget, day, action, reward, total_reward, alert, purchases):
         panel = (20, 28, 52, 210)
 
-        #  Title and alert
+        # Title 
         draw.text((W//2, 10), "SokoPrice Market Environment",
                   font=self._font_lg, fill=C_WHITE, anchor="mt")
         draw.text((W//2, 34), "Rwanda Informal Agricultural Market Simulation",
                   font=self._font_sm, fill=C_GREY, anchor="mt")
         if alert:
-            draw.text((W//2, 54), "PRICE SPIKE ALERT",
+            draw.text((W//2, 54), "⚠  PRICE SPIKE ALERT",
                       font=self._font_md, fill=C_RED, anchor="mt")
 
-        # Left: prices
+        # Left: prices 
         self._rounded_rect(draw, 8, 80, 210, N_ITEMS*28+50, 8, panel)
         draw.text((15, 85), "MARKET PRICES (RWF)", font=self._font_sm, fill=C_TEAL)
         draw.text((15, 103), "ITEM", font=self._font_xs, fill=C_GREY)
@@ -290,7 +278,7 @@ class PILRenderer:
             acol  = C_RED if arrow == "▲" else C_GREEN
             draw.text((175, iy), arrow, font=self._font_sm, fill=acol)
 
-        # ── Right: nutrition ──
+        # Right: nutrition 
         rx = W - 220
         self._rounded_rect(draw, rx, 80, 210, 155, 8, panel)
         draw.text((rx+10, 85), "NUTRITION STATUS", font=self._font_sm, fill=C_GREEN)
@@ -309,7 +297,7 @@ class PILRenderer:
             if bar_w > 0:
                 draw.rectangle([rx+10, iy+16, rx+10+bar_w, iy+26], fill=col)
 
-        # ── Right: budget ──
+        # Right: budget 
         self._rounded_rect(draw, rx, 245, 210, 90, 8, panel)
         draw.text((rx+10, 250), "BUDGET REMAINING", font=self._font_sm, fill=C_AMBER)
         total = DAILY_BUDGET * MAX_DAYS
@@ -331,7 +319,6 @@ class PILRenderer:
             draw.text((155, iy), f"{p['cost']:.0f}", font=self._font_xs, fill=C_AMBER)
 
         # Bottom centre: stats 
-        from environment.rendering import _action_name
         self._rounded_rect(draw, 228, H-148, W-456, 138, 8, panel)
         draw.text((235, H-143), f"Day {day}/{MAX_DAYS}", font=self._font_md, fill=C_TEAL)
         draw.text((235, H-120), f"Action: {_action_name(action)}", font=self._font_sm, fill=C_WHITE)
@@ -351,9 +338,8 @@ class PILRenderer:
             rng = max(mx - mn, 1e-3)
             pts = []
             sw  = W - 470
-            history_slice = self.reward_history[-(sw//3):]
-            for k, v in enumerate(history_slice):
-                px2 = 235 + int(k / max(len(history_slice) -1, 1) * (sw-10))
+            for k, v in enumerate(self.reward_history[-(sw//3):]):
+                px2 = 235 + int(k / max(len(self.reward_history[-(sw//3)])-1, 1) * (sw-10))
                 py2 = H - 30 - int((v - mn) / rng * 40)
                 pts.append((px2, py2))
             if len(pts) > 1:
@@ -403,7 +389,7 @@ def _action_name(action):
     else:                                      return "Substitute"
 
 
-def run_random_agent_demo_3d(save_path="random_agent_demo_3d.gif", n_steps=MAX_DAYS):
+def run_random_agent_demo_3d(save_path="random_agent_demo.gif", n_steps=MAX_DAYS):
     env      = SokoPriceEnv()
     renderer = PILRenderer()
 
@@ -412,7 +398,7 @@ def run_random_agent_demo_3d(save_path="random_agent_demo_3d.gif", n_steps=MAX_D
     frames = []
 
     print("=" * 55)
-    print("  SokoPrice 3D - Random Agent Demo")
+    print(" SokoPrice - Random Agent Demo")
     print("=" * 55)
 
     for _ in range(n_steps):
@@ -433,7 +419,7 @@ def run_random_agent_demo_3d(save_path="random_agent_demo_3d.gif", n_steps=MAX_D
     env.close()
     renderer.close()
     imageio.mimsave(save_path, frames, fps=FPS, loop=0)
-    print(f"\n 3D demo saved -> {save_path}  (total reward: {total_reward:.2f})")
+    print(f"\n demo saved -> {save_path}  (total reward: {total_reward:.2f})")
     return frames
 
 

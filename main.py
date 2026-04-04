@@ -20,7 +20,10 @@ import torch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from environment.custom_env import SokoPriceEnv, FOOD_ITEMS, BASE_PRICES, MAX_DAYS
-from environment.rendering  import SokoPriceRenderer, run_random_agent_demo, _action_name
+from environment.rendering_3d import PILRenderer, run_random_agent_demo_3d, _action_name
+
+def run_random_agent_demo(save_path="random_agent_demo.gif", headless=True, n_steps=MAX_DAYS):
+    return run_random_agent_demo_3d(save_path, n_steps)
 
 
 #  Model loaders
@@ -43,7 +46,6 @@ def load_reinforce_model(model_path, obs_dim=25, act_dim=27):
     net.load_state_dict(torch.load(model_path, map_location="cpu"))
     net.eval()
     return net
-
 
 #  Best model discovery
 def find_best_model():
@@ -77,7 +79,6 @@ def find_best_model():
 
     return best_algo, best_path
 
-
 #  Run demonstration
 def run_demo(algo, model_path, save_path="best_agent_demo.gif", headless=True):
     print(f"\n{'═'*55}")
@@ -86,7 +87,7 @@ def run_demo(algo, model_path, save_path="best_agent_demo.gif", headless=True):
     print(f"{'═'*55}")
 
     env      = SokoPriceEnv()
-    renderer = SokoPriceRenderer(headless=headless)
+    renderer = PILRenderer()
 
     # Load model
     if algo in ("dqn", "ppo"):
@@ -137,7 +138,7 @@ def run_demo(algo, model_path, save_path="best_agent_demo.gif", headless=True):
     print(f"  Demo saved    : {save_path}")
     print(f"{'═'*55}")
 
-    #  JSON serialisation
+    # JSON serialisation 
     summary = {
         "algorithm":     algo,
         "total_reward":  round(total_reward, 2),
@@ -152,9 +153,8 @@ def run_demo(algo, model_path, save_path="best_agent_demo.gif", headless=True):
     with open("agent_summary.json", "w") as f:
         json.dump(summary, f, indent=2)
     print(f"  JSON summary  : agent_summary.json")
-    print(f"\n  JSON output ready for API")
+    print(f"\n  JSON output ready for API / web integration")
     return summary
-
 
 #  CLI
 def main():
@@ -171,7 +171,7 @@ def main():
     if args.random:
         if args.use_3d:
             from environment.rendering_3d import run_random_agent_demo_3d
-            run_random_agent_demo_3d("random_agent_demo_3d.gif")
+            run_random_agent_demo_3d("random_agent_demo.gif")
         else:
             run_random_agent_demo(save_path="random_agent_demo.gif", headless=headless)
         return
