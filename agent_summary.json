@@ -1,0 +1,96 @@
+{
+  "algorithm": "ppo",
+  "total_reward": 139.65,
+  "budget_left": 20043.09,
+  "nutrition": {
+    "protein": 22.2,
+    "carbs": 25.8,
+    "vitamins": 19.8
+  },
+  "purchases": [
+    {
+      "day": 1,
+      "item": "Beans",
+      "units": 3,
+      "cost": 1446.9281005859375
+    },
+    {
+      "day": 2,
+      "item": "Sweet Potato",
+      "units": 3,
+      "cost": 843.3526611328125
+    },
+    {
+      "day": 3,
+      "item": "Sweet Potato",
+      "units": 3,
+      "cost": 1086.4329833984375
+    },
+    {
+      "day": 4,
+      "item": "Beans",
+      "units": 3,
+      "cost": 1929.5625
+    },
+    {
+      "day": 5,
+      "item": "Sweet Potato",
+      "units": 3,
+      "cost": 1108.1900634765625
+    },
+    {
+      "day": 6,
+      "item": "Sweet Potato",
+      "units": 3,
+      "cost": 897.4984130859375
+    },
+    {
+      "day": 7,
+      "item": "Beans",
+      "units": 3,
+      "cost": 2496.949951171875
+    },
+    {
+      "day": 8,
+      "item": "Beans",
+      "units": 3,
+      "cost": 2906.615478515625
+    },
+    {
+      "day": 9,
+      "item": "Beans",
+      "units": 3,
+      "cost": 3000.0
+    },
+    {
+      "day": 10,
+      "item": "Spinach",
+      "units": 3,
+      "cost": 861.312744140625
+    },
+    {
+      "day": 11,
+      "item": "Sweet Potato",
+      "units": 3,
+      "cost": 741.99853515625
+    },
+    {
+      "day": 12,
+      "item": "Sweet Potato",
+      "units": 3,
+      "cost": 760.5745849609375
+    },
+    {
+      "day": 13,
+      "item": "Beans",
+      "units": 3,
+      "cost": 2747.34912109375
+    },
+    {
+      "day": 14,
+      "item": "Spinach",
+      "units": 3,
+      "cost": 1130.1473388671875
+    }
+  ]
+}
