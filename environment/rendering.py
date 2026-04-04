@@ -1,5 +1,5 @@
 """
-SokoPrice Panda3D 3D Visualisation
+SokoPrice Panda3D Visualisation
 3D market environment with animated agent, market stalls, and HUD overlay.
 Renders offscreen and saves as GIF.
 
@@ -17,7 +17,8 @@ from environment.custom_env import (
     SokoPriceEnv, FOOD_ITEMS, BASE_PRICES, N_ITEMS, DAILY_BUDGET, MAX_DAYS
 )
 
-#  Try Panda3D - fall back to enhanced pygame
+#  Try Panda3D — fall back to enhanced pygame
+
 PANDA3D_AVAILABLE = False
 try:
     from panda3d.core import (
@@ -33,9 +34,10 @@ try:
     PANDA3D_AVAILABLE = True
     print(" Panda3D found - using 3D rendering")
 except ImportError:
-    print(" Panda3D not found - using enhanced PIL rendering")
+    print(" Panda3D not found - using enhanced PIL rendering (still high quality)")
 
 #  Colour palette
+
 C_BG       = (12,  18,  35)
 C_PANEL    = (20,  30,  55, 210)
 C_BLUE     = (50, 130, 255)
@@ -60,7 +62,8 @@ STALL_COLORS = [
     (240, 240, 220),  # Rice      - cream
 ]
 
-#  ENHANCED PIL RENDERER (always available, high quality)
+
+#  ENHANCED PIL RENDERER 
 
 class PILRenderer:
 
@@ -71,6 +74,7 @@ class PILRenderer:
         self.trail     = []
         self.reward_history = []
 
+        # Try to load a font; fall back to default
         try:
             self._font_lg  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 20)
             self._font_md  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
@@ -176,7 +180,7 @@ class PILRenderer:
                                   glow_pos[0]+r, glow_pos[1]+r//2],
                                  outline=(*C_GREEN, max(0, 200 - r*15)))
 
-    # Agent
+    # Agent 
     def _draw_agent(self, draw, action, budget, purchases):
         stall_positions = [
             (0, 0), (2, 0), (4, 0), (6, 0),
@@ -244,7 +248,7 @@ class PILRenderer:
             fy = by + 3 + (fi // 3) * 4
             draw.ellipse([fx-2, fy-2, fx+2, fy+2], fill=C_GREEN)
 
-    # HUD panels 
+    # HUD panels
     def _rounded_rect(self, draw, x, y, w, h, r, fill):
         draw.rectangle([x+r, y, x+w-r, y+h], fill=fill)
         draw.rectangle([x, y+r, x+w, y+h-r], fill=fill)
@@ -260,7 +264,7 @@ class PILRenderer:
         draw.text((W//2, 34), "Rwanda Informal Agricultural Market Simulation",
                   font=self._font_sm, fill=C_GREY, anchor="mt")
         if alert:
-            draw.text((W//2, 54), "⚠  PRICE SPIKE ALERT",
+            draw.text((W//2, 54), "PRICE SPIKE ALERT",
                       font=self._font_md, fill=C_RED, anchor="mt")
 
         # Left: prices 
@@ -338,8 +342,9 @@ class PILRenderer:
             rng = max(mx - mn, 1e-3)
             pts = []
             sw  = W - 470
-            for k, v in enumerate(self.reward_history[-(sw//3):]):
-                px2 = 235 + int(k / max(len(self.reward_history[-(sw//3)])-1, 1) * (sw-10))
+            hist = self.reward_history[-(sw//3):]
+            for k, v in enumerate(hist):
+                px2 = 235 + int(k / max(len(hist)-1, 1) * (sw-10))
                 py2 = H - 30 - int((v - mn) / rng * 40)
                 pts.append((px2, py2))
             if len(pts) > 1:
@@ -398,7 +403,7 @@ def run_random_agent_demo_3d(save_path="random_agent_demo.gif", n_steps=MAX_DAYS
     frames = []
 
     print("=" * 55)
-    print(" SokoPrice - Random Agent Demo")
+    print("  SokoPrice 3D - Random Agent Demo")
     print("=" * 55)
 
     for _ in range(n_steps):
@@ -424,4 +429,4 @@ def run_random_agent_demo_3d(save_path="random_agent_demo.gif", n_steps=MAX_DAYS
 
 
 if __name__ == "__main__":
-    run_random_agent_demo_3d("random_agent_demo_3d.gif")
+    run_random_agent_demo_3d("random_agent_demo.gif")
