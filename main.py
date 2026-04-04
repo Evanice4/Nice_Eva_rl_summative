@@ -20,10 +20,10 @@ import torch
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from environment.custom_env import SokoPriceEnv, FOOD_ITEMS, BASE_PRICES, MAX_DAYS
-from environment.rendering import PILRenderer, run_random_agent_demo, _action_name
+from environment.rendering import PILRenderer, run_random_agent_demo_3d, _action_name
 
 def run_random_agent_demo(save_path="random_agent_demo.gif", headless=True, n_steps=MAX_DAYS):
-    return run_random_agent_demo(save_path, n_steps)
+    return run_random_agent_demo_3d(save_path, n_steps)
 
 
 #  Model loaders
