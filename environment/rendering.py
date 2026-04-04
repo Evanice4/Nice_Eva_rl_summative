@@ -17,7 +17,8 @@ from environment.custom_env import (
     SokoPriceEnv, FOOD_ITEMS, BASE_PRICES, N_ITEMS, DAILY_BUDGET, MAX_DAYS
 )
 
-#  Try Panda3D — fall back to enhanced pygame
+
+#  Try Panda3D - fall back to enhanced pygame
 
 PANDA3D_AVAILABLE = False
 try:
@@ -34,7 +35,8 @@ try:
     PANDA3D_AVAILABLE = True
     print(" Panda3D found - using 3D rendering")
 except ImportError:
-    print(" Panda3D not found - using enhanced PIL rendering (still high quality)")
+    print("  Panda3D not found - using enhanced PIL rendering")
+
 
 #  Colour palette
 
@@ -62,10 +64,13 @@ STALL_COLORS = [
     (240, 240, 220),  # Rice      - cream
 ]
 
-
-#  ENHANCED PIL RENDERER 
+#  ENHANCED PIL RENDERER (always available, high quality)
 
 class PILRenderer:
+    """
+    High-quality 2.5D market scene rendered with PIL.
+    Isometric-style market stalls, animated agent, full HUD.
+    """
 
     def __init__(self):
         self.agent_x   = W // 2
@@ -74,7 +79,6 @@ class PILRenderer:
         self.trail     = []
         self.reward_history = []
 
-        # Try to load a font; fall back to default
         try:
             self._font_lg  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 20)
             self._font_md  = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 15)
@@ -119,7 +123,7 @@ class PILRenderer:
     def _lighten(self, col, factor=1.3):
         return tuple(min(255, int(c * factor)) for c in col[:3])
 
-    # Scene
+    # Scene 
     def _draw_scene(self, img, draw, prices, purchases, day):
         """Draw isometric market scene."""
         # Ground tiles
@@ -248,7 +252,7 @@ class PILRenderer:
             fy = by + 3 + (fi // 3) * 4
             draw.ellipse([fx-2, fy-2, fx+2, fy+2], fill=C_GREEN)
 
-    # HUD panels
+    # HUD panels 
     def _rounded_rect(self, draw, x, y, w, h, r, fill):
         draw.rectangle([x+r, y, x+w-r, y+h], fill=fill)
         draw.rectangle([x, y+r, x+w, y+h-r], fill=fill)
@@ -278,11 +282,11 @@ class PILRenderer:
             col = C_RED if prices[i] > BASE_PRICES[i]*1.25 else (C_GREEN if prices[i] < BASE_PRICES[i]*0.9 else C_AMBER)
             draw.text((15,  iy), item[:11],        font=self._font_sm, fill=C_WHITE)
             draw.text((120, iy), f"{prices[i]:.0f}", font=self._font_sm, fill=col)
-            arrow = "▲" if prices[i] > BASE_PRICES[i] else "▼"
-            acol  = C_RED if arrow == "▲" else C_GREEN
-            draw.text((175, iy), arrow, font=self._font_sm, fill=acol)
+            arrow = "UP" if prices[i] > BASE_PRICES[i] else "DN"
+            acol  = C_RED if arrow == "UP" else C_GREEN
+            draw.text((172, iy), arrow, font=self._font_xs, fill=acol)
 
-        # Right: nutrition 
+        # Right: nutrition
         rx = W - 220
         self._rounded_rect(draw, rx, 80, 210, 155, 8, panel)
         draw.text((rx+10, 85), "NUTRITION STATUS", font=self._font_sm, fill=C_GREEN)
@@ -313,7 +317,7 @@ class PILRenderer:
         if bw > 0:
             draw.rectangle([rx+10, 300, rx+10+bw, 312], fill=bcol)
 
-        # Bottom left: purchase log 
+        #  Bottom left: purchase log 
         self._rounded_rect(draw, 8, H-148, 210, 138, 8, panel)
         draw.text((15, H-143), "PURCHASE LOG", font=self._font_sm, fill=C_BLUE)
         recent = purchases[-4:]
@@ -383,6 +387,7 @@ class PILRenderer:
 
 #  Public API — matches rendering.py interface
 
+
 def _action_name(action):
     from environment.custom_env import N_ITEMS, N_BUY_TIERS, FOOD_ITEMS
     if action < N_BUY_TIERS * N_ITEMS:
@@ -403,7 +408,7 @@ def run_random_agent_demo_3d(save_path="random_agent_demo.gif", n_steps=MAX_DAYS
     frames = []
 
     print("=" * 55)
-    print("  SokoPrice 3D - Random Agent Demo")
+    print("  SokoPrice - Random Agent Demo")
     print("=" * 55)
 
     for _ in range(n_steps):
