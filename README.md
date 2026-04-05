@@ -11,9 +11,10 @@ Rwanda's informal agricultural markets suffer from opaque, volatile pricing that
 ---
 
 ## Full Demonstration
-
+**Random Agent Demo**
 [Random Agent Demo:  random_agent_demo.gif](demos/best_agent_demo.gif)
  
+ **Best Agent Demo**
 ![Best Agent Demo](demos/best_agent_demo.gif)
 
 ### Environment Visualization
@@ -78,7 +79,7 @@ python training/pg_training.py
 
 # 5. Run best agent
 python main.py
-# -> saves best_agent_demo.gif + agent_summary.json
+# -> saves best_agent_demo.gif 
 ```
 
 ---
