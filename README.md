@@ -1,7 +1,5 @@
 # SokoPrice: RL Market Intelligence Agent
 
-**Nice_Eva_Karabaranga_rl_summative**
-
 > Empowering Rwandan households with price intelligence and nutrition planning through Reinforcement Learning.
 
 ---
@@ -14,8 +12,9 @@ Rwanda's informal agricultural markets suffer from opaque, volatile pricing that
 
 ## Full Demonstration
 
-[Agent Playing Demo: best_agent_demo.gif](./best_agent_demo.gif)  
 [Random Agent Demo:  random_agent_demo.gif](./random_agent_demo.gif)
+ 
+![Best Agent Demo](best_agent_demo.gif)
 
 ### Environment Visualization
 
@@ -40,7 +39,7 @@ Nice_Eva_Karabaranga_rl_summative/
 ├── environment/
 │   ├── custom_env.py      # Custom Gymnasium environment
 │   ├── rendering.py       # Pygame visualization (fallback)
-│   ├── rendering_3d.py    # Isometric 3D visualization (primary)
+│   ├── rendering_3d.py    # Isometric 3D visualization (primary, no model and no training)
 ├── training/
 │   ├── dqn_training.py    # DQN: 10 hyperparameter experiments
 │   ├── pg_training.py     # REINFORCE + PPO: 10 experiments each
@@ -49,7 +48,7 @@ Nice_Eva_Karabaranga_rl_summative/
 │   └── pg/
 │       ├── ppo/           # Saved PPO models (.zip)
 │       └── reinforce/     # Saved REINFORCE models (.pt)
-├── logs/
+├── results/
 │   ├── dqn/               # DQN results CSV + reward curves
 │   └── pg/                # REINFORCE + PPO results CSV + curves
 ├── main.py                # Entry point; runs best model
@@ -90,9 +89,9 @@ python main.py
 
 | Indices | Description |
 |---------|-------------|
-| 0–7 | Normalised current prices for 8 food items |
-| 8–15 | Price trend (today vs yesterday) |
-| 16–18 | Accumulated nutrition [protein, carbs, vitamins] |
+| 0-7 | Normalised current prices for 8 food items |
+| 8-15 | Price trend (today vs yesterday) |
+| 16-18 | Accumulated nutrition [protein, carbs, vitamins] |
 | 19 | Remaining budget (normalised) |
 | 20 | Day index (normalised) |
 | 21–23 | Deficit to daily nutrition target |
@@ -229,5 +228,4 @@ After running `main.py`, an `agent_summary.json` is produced; ready for a web or
 
 ## Author
 
-**Nice Eva Karabaranga**  
-African Leadership University; Software Engineering (AI/ML Specilization)  
+**Nice Eva Karabaranga**    
