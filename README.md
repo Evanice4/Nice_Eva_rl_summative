@@ -12,9 +12,9 @@ Rwanda's informal agricultural markets suffer from opaque, volatile pricing that
 
 ## Full Demonstration
 
-[Random Agent Demo:  random_agent_demo.gif](demos\random_agent_demo.gif)
+[Random Agent Demo:  random_agent_demo.gif](demos/best_agent_demo.gif)
  
-![Best Agent Demo](\demos\best_agent_demo.gif)
+![Best Agent Demo](demos/best_agent_demo.gif)
 
 ### Environment Visualization
 
